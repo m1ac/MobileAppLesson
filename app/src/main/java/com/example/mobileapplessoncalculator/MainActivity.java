@@ -2,6 +2,7 @@ package com.example.mobileapplessoncalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    TextView tvNumber, tvExpression;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    TextView tvExpression;
+    RecyclerView recyclerView;
     CardView cardViewOnOff;
-    Float num1 = null;
-    IOperation operation = null;
+    Operation operation = null;
+    List<IOperation> operations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,45 +26,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         //variable_type variable_name = value;
-
-        IOperation operation = new Power();
-        operation.Do(5, 6);
-
-        tvNumber = findViewById(R.id.tvNumber);
+        recyclerView = findViewById(R.id.recyclerView1);
         tvExpression = findViewById(R.id.tvExpression);
         cardViewOnOff = findViewById(R.id.cardViewOnOff);
-
-        Button btnNum7 = findViewById(R.id.btn7);
-        //btnNum7.setText("0");
-        /*btnNum7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tvNumber.setText(((TextView) view).getText());
-            }
-        });*/
-
-        Button btnNum9 = findViewById(R.id.btn9);
-        //btnNum9.setOnClickListener(this);
-    }
-
-    public void BtnClick(View v) {
-        if (v.getId() == R.id.btnAdd) {
-            //Toplama
-            num1 = Float.parseFloat(tvNumber.getText() + "");
-            operation = new Addiction();
-            tvNumber.setText("");
-        } else if (v.getId() == R.id.btnSub) {
-            //Çıkarma
-            num1 = Float.parseFloat(tvNumber.getText() + "");
-            operation = new Subtraction();
-            tvNumber.setText("");
-        } else if (v.getId() == R.id.btnEqual) {
-            //Eşittir
-            Float result = operation.Do(num1, Float.parseFloat(tvNumber.getText() + ""));
-            tvNumber.setText(result + "");
-        } else {
-            tvNumber.setText(tvNumber.getText() + String.valueOf(v.getTag()));
-        }
     }
 
     public void CardNumberClick(View v) {
@@ -85,8 +54,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TakeNumberAndClear();
                 break;
             case "=":
-                float result = operation.Do(num1, Float.parseFloat(tvExpression.getText().toString()));
-                tvExpression.setText(String.valueOf(result));
+                operation.num2 = Float.parseFloat(tvExpression.getText().toString());
+                operations.add(operation);
+
+                float result = operation.Do(operation.num1, operation.num2);
+                tvExpression.setText(result + "");
+                /*tvHistory.setText(tvHistory.getText() + "\n" +
+                        operation.num1 + operation.GetSign() + operation.num2 + "=" + result);*/
+                //tvExpression.setText("");
                 break;
             default:
                 break;
@@ -94,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void TakeNumberAndClear() {
-        num1 = Float.parseFloat(tvExpression.getText().toString());
+        operation.num1 = Float.parseFloat(tvExpression.getText().toString());
         tvExpression.setText("");
     }
 
@@ -114,10 +89,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void multiply(int n1, int n2) {
         int result = n1 * n2;
         Log.e("Sonuç", result + "");
-    }
-
-    @Override
-    public void onClick(View view) {
-        tvNumber.setText(view.getTag() + "");
     }
 }
