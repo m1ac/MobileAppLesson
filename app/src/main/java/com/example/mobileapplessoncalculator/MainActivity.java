@@ -2,6 +2,7 @@ package com.example.mobileapplessoncalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -15,10 +16,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     TextView tvExpression;
-    RecyclerView recyclerView;
+    RecyclerView recyclerViewHistory;
     CardView cardViewOnOff;
     Operation operation = null;
-    List<IOperation> operations = new ArrayList<>();
+    List<Operation> operations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         //variable_type variable_name = value;
-        recyclerView = findViewById(R.id.recyclerView1);
+        recyclerViewHistory = findViewById(R.id.recyclerViewHistory);
         tvExpression = findViewById(R.id.tvExpression);
         cardViewOnOff = findViewById(R.id.cardViewOnOff);
     }
@@ -59,6 +60,17 @@ public class MainActivity extends AppCompatActivity {
 
                 float result = operation.Do(operation.num1, operation.num2);
                 tvExpression.setText(result + "");
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+                recyclerViewHistory.setLayoutManager(layoutManager);
+                recyclerViewHistory.setAdapter(new HistoryAdapter(operations));
+                recyclerViewHistory.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerViewHistory.scrollToPosition(operations.size() - 1);
+                    }
+                });
+
                 /*tvHistory.setText(tvHistory.getText() + "\n" +
                         operation.num1 + operation.GetSign() + operation.num2 + "=" + result);*/
                 //tvExpression.setText("");

@@ -1,5 +1,7 @@
 package com.example.mobileapplessoncalculator;
 
+import android.graphics.Color;
+
 public class Multiplication extends Operation {
     @Override
     public float Do(float num1, float num2) {
@@ -9,5 +11,10 @@ public class Multiplication extends Operation {
     @Override
     public String GetSign() {
         return "*";
+    }
+
+    @Override
+    public int GetSignColor() {
+        return Color.MAGENTA;
     }
 }

@@ -84,11 +84,13 @@
         app:layout_constraintRight_toLeftOf="@+id/guidelineV5" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/recyclerViewHistory"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toTopOf="@+id/tvExpression"
-        app:layout_constraintRight_toLeftOf="@id/guidelineV5" />
+        app:layout_constraintLeft_toRightOf="@+id/guidelineV1"
+        app:layout_constraintRight_toLeftOf="@id/guidelineV5"
+         />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -602,11 +604,11 @@
     <!--endregion-->
 
     <androidx.cardview.widget.CardView
-        android:visibility="visible"
         android:id="@+id/cardViewOnOff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="#000"/>
+        android:visibility="visible"
+        app:cardBackgroundColor="#000" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardAC"
