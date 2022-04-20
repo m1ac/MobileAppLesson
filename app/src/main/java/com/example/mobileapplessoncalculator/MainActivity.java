@@ -11,8 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     TextView tvExpression;
@@ -30,6 +36,24 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewHistory = findViewById(R.id.recyclerViewHistory);
         tvExpression = findViewById(R.id.tvExpression);
         cardViewOnOff = findViewById(R.id.cardViewOnOff);
+
+        ApiService apiService = RetrofitInstance.getInstance().create(ApiService.class);
+        Call<TestResponse> call = apiService.getData();
+        call.enqueue(new Callback<TestResponse>() {
+            @Override
+            public void onResponse(Call<TestResponse> call, Response<TestResponse> response) {
+                //Log.e("Response", (new Gson()).toJson(response.body()));
+                for (User user : response.body().getData()) {
+                    Log.e("User", user.getFirst_name() + " " + user.getEmail());
+                }
+                Log.e("Response", response.body().getTotal() + "");
+            }
+
+            @Override
+            public void onFailure(Call<TestResponse> call, Throwable t) {
+                Log.e("Hata", t.getMessage());
+            }
+        });
     }
 
     public void CardNumberClick(View v) {
