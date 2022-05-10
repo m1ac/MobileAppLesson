@@ -1,17 +1,18 @@
 package com.example.mobileapplessoncalculator;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
-import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,28 +33,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+
+        Intent glideIntent = new Intent(this, GlideActivity.class);
+        startActivity(glideIntent);
+
+
         //variable_type variable_name = value;
         recyclerViewHistory = findViewById(R.id.recyclerViewHistory);
         tvExpression = findViewById(R.id.tvExpression);
         cardViewOnOff = findViewById(R.id.cardViewOnOff);
 
-        ApiService apiService = RetrofitInstance.getInstance().create(ApiService.class);
-        Call<TestResponse> call = apiService.getData();
-        call.enqueue(new Callback<TestResponse>() {
-            @Override
-            public void onResponse(Call<TestResponse> call, Response<TestResponse> response) {
-                //Log.e("Response", (new Gson()).toJson(response.body()));
-                for (User user : response.body().getData()) {
-                    Log.e("User", user.getFirst_name() + " " + user.getEmail());
-                }
-                Log.e("Response", response.body().getTotal() + "");
-            }
 
-            @Override
-            public void onFailure(Call<TestResponse> call, Throwable t) {
-                Log.e("Hata", t.getMessage());
-            }
-        });
     }
 
     public void CardNumberClick(View v) {
